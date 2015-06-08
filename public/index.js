@@ -6,7 +6,22 @@
 */
 var localStation = function(callback) {
 
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var foundStations = _.filter(data, function(station){
+        return station.id === "31221"
+      })
+
+      callback(foundStations[0])
+    }
+  }
+
+  $.ajax(ajaxSettings)
+
 }
+
 
 /*
   This function accepts a callback function as a parameter.
@@ -17,7 +32,17 @@ var localStation = function(callback) {
     with the highest latitude.)
 */
 var northernmostStation = function(callback) {
-  
+  var northernmost ={
+      url: "/stations",
+      method: "GET",
+      success: function(data) {
+        var nomost = _.max(data, function(station){
+          return station.latitude 
+        })
+        callback(nomost)
+      }
+  }
+  $.ajax(northernmost)
 }
 
 /*
@@ -30,6 +55,15 @@ var northernmostStation = function(callback) {
     each time.
 */
 var randomStation = function(callback) {
+  var randoStation ={
+      url: "/stations",
+      method: "GET",
+      success: function(data) {
+        var ranStat = _.sample(data)
+        callback(ranStat)
+      }
+  }
+  $.ajax(randoStation)
   
 }
 
@@ -41,6 +75,18 @@ var randomStation = function(callback) {
     any stations in the Capital Bikeshare system that currently have 0 bikes.
 */
 var emptyStations = function(callback) {
+  
+  var empStation ={
+      url: "/stations",
+      method: "GET",
+      success: function(data) {
+        var eStat = _.filter(data, function(station){
+          return station.bikes === 0
+        })
+        callback(eStat)
+      }
+  }
+  $.ajax(empStation)  
 
 }
 
@@ -52,5 +98,17 @@ var emptyStations = function(callback) {
     in the last 15 minutes.
 */
 var recentStations = function(callback) {
+ 
+  var recStation ={
+      url: "/stations",
+      method: "GET",
+      success: function(data) {
+        var reStat = _.filter(data, function(station){
+          return station.lastUpdated <= 900000
+        })
+        callback(reStat)
+      }
+  }
+  $.ajax(recStation)  
 
 }
