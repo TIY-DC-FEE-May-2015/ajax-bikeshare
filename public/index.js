@@ -5,6 +5,19 @@
     the station at 18th and M Street NW (which is ID "31221")
 */
 var localStation = function(callback) {
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var foundStations = _.filter(data, function(station){
+        return station.id === "31221"
+      })
+
+      callback(foundStations[0])
+    }
+  }
+
+  $.ajax(ajaxSettings)
 
 }
 
@@ -17,7 +30,16 @@ var localStation = function(callback) {
     with the highest latitude.)
 */
 var northernmostStation = function(callback) {
-  
+    $.ajax({
+      url: "/stations",
+      method: "GET",
+      success: function(data){
+        var highestStations = _.filter (data, function(station){
+          return station.id === "32018"
+        })
+          callback(highestStations[0])
+      }
+    })
 }
 
 /*
@@ -30,7 +52,15 @@ var northernmostStation = function(callback) {
     each time.
 */
 var randomStation = function(callback) {
-  
+      var randomStations = {
+      url: "/stations",
+      method: "GET",
+      success: function(data){
+       var ranSpot = _.sample(data)
+       callback(ranSpot)
+    }
+}
+  $.ajax(randomStations)
 }
 
 
@@ -41,7 +71,17 @@ var randomStation = function(callback) {
     any stations in the Capital Bikeshare system that currently have 0 bikes.
 */
 var emptyStations = function(callback) {
-
+  var empty = {
+      url: "/stations",
+      method: "GET",
+      success: function(data){
+        var noBikes = _.filter(data, function(station){
+          return station.bikes === 0
+        }) 
+        callback(noBikes)
+      }
+  }
+  $.ajax(empty)
 }
 
 /*
@@ -52,5 +92,15 @@ var emptyStations = function(callback) {
     in the last 15 minutes.
 */
 var recentStations = function(callback) {
-
+    var anything = {
+      url: "/stations",
+      method: "GET",
+      success: function(data){
+        var Share = _.filter(data, function(station){
+            return station.lastUpdated < 900000
+        })
+          callback(Share)
+      }
+    }
+    $.ajax(anything)
 }
