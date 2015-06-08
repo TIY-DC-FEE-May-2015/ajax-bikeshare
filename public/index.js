@@ -6,6 +6,18 @@
 */
 var localStation = function(callback) {
 
+$.ajax({
+  url:"/stations",
+  method:"get",
+  success: function (data) {
+    var foundStations =_.filter(data, function (station) {
+      return station.id ==="31221"
+    }) 
+
+    callback(foundStations[0])
+  }
+})
+
 }
 
 /*
@@ -17,6 +29,17 @@ var localStation = function(callback) {
     with the highest latitude.)
 */
 var northernmostStation = function(callback) {
+  $.ajax({
+    url:"/stations",
+    method:"get",
+    success: function (data) {
+      var maxlaStations = _.max(data, function (station) {
+
+        return station.latitude
+      })
+        callback(maxlaStations)
+  }
+})
   
 }
 
@@ -30,7 +53,18 @@ var northernmostStation = function(callback) {
     each time.
 */
 var randomStation = function(callback) {
-  
+ $.ajax({
+    url:"/stations",
+    method:"get",
+    success: function (data) {
+      var randomStations = _.filter(data, function (station) {
+       var random = Math.floor(Math.random() * (5));
+        return random 
+      })
+        callback(randomStations[5])
+  }
+})
+
 }
 
 
@@ -41,6 +75,17 @@ var randomStation = function(callback) {
     any stations in the Capital Bikeshare system that currently have 0 bikes.
 */
 var emptyStations = function(callback) {
+$.ajax({
+  url:"/stations",
+  method:"get",
+  success: function (data) {
+    var zerobikes =_.filter(data, function (station) {
+      return station.bikes ===0
+    }) 
+
+    callback(zerobikes)
+  }
+})
 
 }
 
@@ -52,5 +97,16 @@ var emptyStations = function(callback) {
     in the last 15 minutes.
 */
 var recentStations = function(callback) {
+$.ajax({
+  url:"/stations",
+  method:"get",
+  success: function (data) {
+    var recent =_.filter(data, function (station) {
+     return station.lastUpdated<900000
+    }) 
+
+    callback(recent)
+  }
+})  
 
 }
