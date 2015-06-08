@@ -6,6 +6,19 @@
 */
 var localStation = function(callback) {
 
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var foundStations = _.filter(data, function(station){
+        return station.id === "31221"
+      })
+
+      callback(foundStations[0])
+    }
+  }
+
+  $.ajax(ajaxSettings)
 }
 
 /*
@@ -17,7 +30,20 @@ var localStation = function(callback) {
     with the highest latitude.)
 */
 var northernmostStation = function(callback) {
-  
+
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+
+      var highestLatitude = _.max(data, function(station){
+        return station.latitude 
+      })
+
+      callback(highestLatitude)
+    }
+  } 
+  $.ajax(ajaxSettings)
 }
 
 /*
@@ -30,7 +56,18 @@ var northernmostStation = function(callback) {
     each time.
 */
 var randomStation = function(callback) {
-  
+
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+
+      var getRandomStation = Math.floor(Math.random() * data.length)
+      var randomStationInfo = data[getRandomStation]
+      callback(randomStationInfo)
+    }
+  }
+  $.ajax(ajaxSettings)
 }
 
 
@@ -42,6 +79,18 @@ var randomStation = function(callback) {
 */
 var emptyStations = function(callback) {
 
+    var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var stationNoBike =  _.filter(data, function(station){
+        return station.bikes === 0
+      })
+
+      callback(stationNoBike)
+    }
+  }
+  $.ajax(ajaxSettings)
 }
 
 /*
@@ -53,4 +102,17 @@ var emptyStations = function(callback) {
 */
 var recentStations = function(callback) {
 
+    var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var update = _.filter(data, function(station){
+        return station.lastUpdated <= "900000"
+      })
+
+      callback(update)
+    }
+  }
+
+  $.ajax(ajaxSettings)
 }
