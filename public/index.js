@@ -5,6 +5,20 @@
     the station at 18th and M Street NW (which is ID "31221")
 */
 var localStation = function(callback) {
+ 
+    var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var foundStations = _.filter(data, function(station){
+        return station.id === "31221"
+      })
+
+      callback(foundStations[0])
+    }
+  }
+
+  $.ajax(ajaxSettings)
 
 }
 
@@ -18,6 +32,18 @@ var localStation = function(callback) {
 */
 var northernmostStation = function(callback) {
   
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var northStation = _.max(data, function(station){ 
+        return station.latitude; 
+      })
+      
+      callback(northStation)
+    }
+  }
+  $.ajax(ajaxSettings)
 }
 
 /*
@@ -31,6 +57,17 @@ var northernmostStation = function(callback) {
 */
 var randomStation = function(callback) {
   
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var rStation = _.sample(data)
+      
+      callback(rStation)
+    }
+  }
+  $.ajax(ajaxSettings)
+
 }
 
 
@@ -42,6 +79,19 @@ var randomStation = function(callback) {
 */
 var emptyStations = function(callback) {
 
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var eStations = _.filter(data, function(station){ 
+        return station.bikes === 0; 
+      });
+      
+      callback(eStations)
+    }
+  }
+  $.ajax(ajaxSettings)
+
 }
 
 /*
@@ -52,5 +102,18 @@ var emptyStations = function(callback) {
     in the last 15 minutes.
 */
 var recentStations = function(callback) {
+
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var recStations = _.filter(data, function(station){ 
+        return station.lastUpdated <= 900000; 
+      });
+      
+      callback(recStations)
+    }
+  }
+  $.ajax(ajaxSettings)
 
 }
