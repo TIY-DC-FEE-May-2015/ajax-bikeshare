@@ -5,8 +5,34 @@
     the station at 18th and M Street NW (which is ID "31221")
 */
 var localStation = function(callback) {
+/*
+  $.ajax ({
+    url: "/stations",
+    method: "GET",
+    success: function (data) {
+      var foundStations = _.filter(data, function(station){
+        return station.id === "31221"
+      })
+    
+    callback(foundStations[0])
+    }
+  })*/
 
-}
+//or
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function (data) {
+      var foundStations = _.filter(data, function(station){
+        return station.id === "31221"
+      })
+
+      callback(foundStations[0])
+    }
+  }
+  $.ajax(ajaxSettings)
+
+}  
 
 /*
   This function accepts a callback function as a parameter.
@@ -18,6 +44,29 @@ var localStation = function(callback) {
 */
 var northernmostStation = function(callback) {
   
+  $.ajax ({
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+      var foundStations = _.max(data, function(station){
+        return station.latitude
+      })
+
+     /* var foundStations = _.reduce(data, function(memory, latitude, station){
+        if (memory.latitude > station.latitude) {
+          return latitude
+        }
+
+        return memory
+        console.log(memory)
+      }, 0)
+ }*/
+
+      callback(foundStations)
+    }
+
+  })
+
 }
 
 /*
@@ -31,6 +80,20 @@ var northernmostStation = function(callback) {
 */
 var randomStation = function(callback) {
   
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+
+
+      var anyStation = _.sample(data)
+    
+    callback(anyStation)
+    }
+  }
+
+  $.ajax(ajaxSettings)
+
 }
 
 
@@ -42,6 +105,24 @@ var randomStation = function(callback) {
 */
 var emptyStations = function(callback) {
 
+  var ajaxSettings = {
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+
+      var empty = _.filter(data, function(station){
+        return station.bikes === 0
+      })
+      /*if ((bikes in data) === 0){
+        empty.push(bikes)
+      }*/
+
+      callback(empty)
+    }
+  }
+
+  $.ajax(ajaxSettings)
+
 }
 
 /*
@@ -52,5 +133,21 @@ var emptyStations = function(callback) {
     in the last 15 minutes.
 */
 var recentStations = function(callback) {
+
+  $.ajax ({
+    url: "/stations",
+    method: "GET",
+    success: function(data) {
+
+      var recent = _.filter(data, function(station){
+        //d = Date.now()
+        //console.log(d)
+        //return station.lastUpdated >= (d - 900000)
+        return station.lastUpdated <= 900000
+      })
+      
+      callback(recent)
+    }
+  })
 
 }
