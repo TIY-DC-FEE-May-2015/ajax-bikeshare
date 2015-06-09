@@ -52,14 +52,14 @@ var northernmostStation = function(callback) {
         return station.latitude
       })
 
-     /* var foundStations = _.reduce(data, function(memory, latitude, station){
+     /* var foundStations = _.reduce(data, function(mem, item){
         if (memory.latitude > station.latitude) {
           return latitude
         }
 
         return memory
         console.log(memory)
-      }, 0)
+      }, {})
  }*/
 
       callback(foundStations)
