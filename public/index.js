@@ -34,10 +34,11 @@ var northernmostStation = function(callback) {
       url: "/stations",
       method: "GET",
       success: function(data){
-        var highestStations = _.filter (data, function(station){
-          return station.id === "32018"
+        var highestStations = _.max(data, function(station){
+          return station.latitude
+
         })
-          callback(highestStations[0])
+          callback(highestStations)
       }
     })
 }
@@ -97,7 +98,7 @@ var recentStations = function(callback) {
       method: "GET",
       success: function(data){
         var Share = _.filter(data, function(station){
-            return station.lastUpdated < 900000
+            return station.lastUpdated <= 900000
         })
           callback(Share)
       }
